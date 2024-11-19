@@ -33,12 +33,12 @@ jobs:
       - name: Build and tag Docker image
         run: |
           docker build -t vehicles:latest .
-          docker tag vehicles:latest 277707115562.dkr.ecr.ap-south-1.amazonaws.com/vehicle-repo:latest
+          docker tag vehicles:latest 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
 
       # Step 5: Push the Docker image to ECR
       - name: Push Docker image to Amazon ECR
         run: |
-          docker push 277707115562.dkr.ecr.ap-south-1.amazonaws.com/vehicle-repo:latest
+          docker push 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
 
       # Step 6: Save EC2 private key to a file
       - name: Save EC2 private key to file
@@ -50,9 +50,9 @@ jobs:
       - name: Deploy Docker image to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@13.234.136.28 << 'EOF'
-            sudo docker pull 277707115562.dkr.ecr.ap-south-1.amazonaws.com/vehicle-repo:latest
+            sudo docker pull 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
             sudo docker stop $(sudo docker ps -q) || true
-            sudo docker run -d -p 8080:8080 277707115562.dkr.ecr.ap-south-1.amazonaws.com/vehicle-repo:latest
+            sudo docker run -d -p 8080:8080 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
           EOF
 
       # Step 8: Clean up private key
