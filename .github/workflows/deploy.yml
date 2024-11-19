@@ -49,7 +49,7 @@ jobs:
       # Step 7: Deploy the Docker image to EC2
       - name: Deploy Docker image to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@13.234.136.28 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@43.205.114.77 << 'EOF'
             sudo docker pull 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
             sudo docker stop $(sudo docker ps -q) || true
             sudo docker run -d -p 8080:8080 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
