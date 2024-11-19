@@ -47,17 +47,13 @@ jobs:
           chmod 600 private-key.pem
 
       # Step 7: Deploy the Docker image to EC2 
-      - name: Deploy to EC2
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@43.205.114.77 << 'EOF'
-          sudo apt update
-          sudo apt install -y awscli
-          aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin 277707115562.dkr.ecr.ap-south-1.amazonaws.com
-          sudo docker pull 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
-          sudo docker stop $(sudo docker ps -q) || true
-          sudo docker rm $(sudo docker ps -aq) || true
-          sudo docker run -d -p 8080:8080 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
-      EOF
+      - name: Deploy Docker image to EC2
+  run: |
+    ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@43.205.114.77 << 'EOF'
+      sudo docker pull 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
+      sudo docker stop $(sudo docker ps -q) || true
+      sudo docker run -d -p 8080:8080 277707115562.dkr.ecr.ap-south-1.amazonaws.com/detection-repo:latest
+    EOF
 
 
 
